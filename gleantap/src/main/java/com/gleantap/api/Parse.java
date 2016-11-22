@@ -63,7 +63,7 @@ public class Parse {
         try {
             jsonObject.accumulate(Keys.event_name,event_name);
             jsonObject.accumulate(Keys.appid,AppId);
-            jsonObject.accumulate(Keys.user_id,getDeviceUniqueID(context));
+            jsonObject.accumulate(Keys.userId,getDeviceUniqueID(context));
             jsonObject.accumulate(Keys.platform,Keys.Android);
 
         }catch (Exception e){
