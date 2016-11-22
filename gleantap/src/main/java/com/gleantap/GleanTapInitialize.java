@@ -11,10 +11,11 @@ public class GleanTapInitialize {
 
     static NotificationPresenter presenter; ;
 
-
+  static String AppId = "";
     public static void initialize(Context contexts,String App_IDs){
         presenter = new NotificationPresenter();
         presenter.initialize(contexts,App_IDs);
+        AppId = App_IDs;
     }
 
     public static void registerToken(String token){
@@ -25,7 +26,7 @@ public class GleanTapInitialize {
     }
 
     public static void registerEvent(String data){
-        presenter.registeredEvent(data);
+        presenter.registeredEvent(data,AppId);
     }
 
 

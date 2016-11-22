@@ -12,5 +12,5 @@ public interface INotificationPresenter {
     void initialize(Context context, String App_ID);
     void registeredToken(String Token);
     void registeredToken(String Token, Hashtable<String, String> data);
-    void registeredEvent(String data);
+    void registeredEvent(String data,String AppId);
 }

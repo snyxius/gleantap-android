@@ -58,10 +58,11 @@ public class Parse {
         return  jsonObject;
     }
 
-    public static  JSONObject sendEventData(Context context,String event_name){
+    public static  JSONObject sendEventData(Context context,String event_name,String AppId){
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.accumulate(Keys.event_name,event_name);
+            jsonObject.accumulate(Keys.appid,AppId);
             jsonObject.accumulate(Keys.user_id,getDeviceUniqueID(context));
             jsonObject.accumulate(Keys.platform,Keys.Android);
 

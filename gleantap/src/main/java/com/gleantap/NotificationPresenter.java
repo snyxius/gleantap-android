@@ -43,8 +43,8 @@ public  class  NotificationPresenter implements INotificationPresenter,OnValidat
     }
 
     @Override
-    public void registeredEvent(String data) {
-        interaction.validateInteractionData(this,data);
+    public void registeredEvent(String data,String AppId) {
+        interaction.validateInteractionData(this,data,AppId);
     }
 
 

@@ -163,12 +163,12 @@ public class AsyncHandlerInteraction implements IAsyncHandlerInteraction{
     }
 
     @Override
-    public void validateInteractionData(OnValidateFinishListner onValidateFinishListner, String data) {
+    public void validateInteractionData(OnValidateFinishListner onValidateFinishListner, String data,String AppId) {
         if (data.isEmpty() || data == null){
             onValidateFinishListner.emptyData();
         }else{
 
-            new SendEventData().execute(Parse.sendEventData(context,data).toString(), Constants.EVENT_DETAILS);
+            new SendEventData().execute(Parse.sendEventData(context,data,AppId).toString(), Constants.EVENT_DETAILS);
         }
     }
 
