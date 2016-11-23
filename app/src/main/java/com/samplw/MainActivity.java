@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        GleanTapInitialize.initialize(this,"5833fb09fbb5971f3ea36be7");
+        GleanTapInitialize.initialize(this,"58357f30fbb597dd71a36be5");
         System.out.println("Un "+getDeviceUniqueID(this));
         GleanTapInitialize.registerEvent(Keys.openApp);
     }
