@@ -18,13 +18,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         GleanTapInitialize.initialize(this,"58357f30fbb597dd71a36be5");
-        System.out.println("Un "+getDeviceUniqueID(this));
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         GleanTapInitialize.registerEvent(Keys.openApp);
     }
 
-    public static  String getDeviceUniqueID(Context activity){
-        String device_unique_id = Settings.Secure.getString(activity.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-        return device_unique_id;
+    @Override
+    protected void onStop() {
+        super.onStop();
+        GleanTapInitialize.registerEvent(Keys.closeApp);
     }
+
 }

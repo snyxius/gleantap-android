@@ -2,13 +2,20 @@ package com.gleantap.api;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.format.Formatter;
+import android.util.Log;
 
 import com.gleantap.extras.Keys;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Locale;
@@ -29,18 +36,64 @@ public class Parse {
             jsonObject.accumulate(Keys.platform,Keys.Android);
             jsonObject.accumulate(Keys.userId,getDeviceUniqueID(context));
             JSONObject jsonObject1 = new JSONObject();
-            jsonObject1.accumulate("country", Locale.getDefault().getDisplayCountry());
-            jsonObject1.accumulate("language", Locale.getDefault().getDisplayLanguage());
-            jsonObject1.accumulate("os model", android.os.Build.MODEL);
-            jsonObject1.accumulate("os brand",android.os.Build.BRAND);
-            jsonObject1.accumulate("os version",android.os.Build.VERSION.RELEASE );
-            jsonObject1.accumulate("os",android.os.Build.VERSION.SDK_INT);
+            jsonObject1.accumulate(Keys.country, getLocalIpAddress());
+            jsonObject1.accumulate(Keys.city,getLocalIpAddress());
+            jsonObject1.accumulate(Keys.language, Locale.getDefault().getDisplayLanguage());
+            jsonObject1.accumulate(Keys.os,getOSDetails());
+            jsonObject1.accumulate(Keys.ip,getLocalIpAddress());
             jsonObject.accumulate(Keys.data,jsonObject1);
         }catch (Exception e){
                 e.printStackTrace();
         }
 
         return  jsonObject;
+    }
+
+    public static String getOSDetails(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("android : ").append(Build.VERSION.RELEASE);
+
+        Field[] fields = Build.VERSION_CODES.class.getFields();
+        for (Field field : fields) {
+            String fieldName = field.getName();
+            int fieldValue = -1;
+
+            try {
+                fieldValue = field.getInt(new Object());
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+            if (fieldValue == Build.VERSION.SDK_INT) {
+                builder.append(" : ").append(fieldName).append(" : ");
+                builder.append("sdk=").append(fieldValue);
+            }
+        }
+
+        return builder.toString();
+    }
+
+    public static String getLocalIpAddress() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        String ip = Formatter.formatIpAddress(inetAddress.hashCode());
+                        Log.i("***** IP=",ip);
+                        return ip;
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+            Log.e("Ex", ex.toString());
+        }
+        return null;
     }
 
     public static  JSONObject sendSessionData(Context context,String App_Id){
@@ -82,13 +135,11 @@ public class Parse {
         try {
             JSONObject jsonObject1 = new JSONObject();
 
-            jsonObject1.accumulate("country", Locale.getDefault().getDisplayCountry());
-            jsonObject1.accumulate("language", Locale.getDefault().getDisplayLanguage());
-            jsonObject1.accumulate("os model", android.os.Build.MODEL);
-            jsonObject1.accumulate("os brand",android.os.Build.BRAND);
-            jsonObject1.accumulate("OS version",android.os.Build.VERSION.RELEASE );
-            jsonObject1.accumulate("os",android.os.Build.VERSION.SDK_INT);
-
+            jsonObject1.accumulate(Keys.country, getLocalIpAddress());
+            jsonObject1.accumulate(Keys.city,getLocalIpAddress());
+            jsonObject1.accumulate(Keys.language, Locale.getDefault().getDisplayLanguage());
+            jsonObject1.accumulate(Keys.os,getOSDetails());
+            jsonObject1.accumulate(Keys.ip,getLocalIpAddress());
             Enumeration e = data.keys();
             while (e.hasMoreElements()) {
                 String key = (String) e.nextElement();

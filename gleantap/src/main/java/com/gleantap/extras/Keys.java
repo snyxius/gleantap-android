@@ -20,4 +20,12 @@ public interface Keys {
     String platform = "platform";;
     String $id = "$id";
     String status = "status";
+
+
+    String country = "country";
+    String city = "city";
+    String os = "os";
+    String language = "language";
+    String ip = "ip";
+
 }

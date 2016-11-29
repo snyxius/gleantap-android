@@ -22,12 +22,11 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
 
 
-        GleanTapInitialize.registerToken(FirebaseInstanceId.getInstance().getToken());
+       // GleanTapInitialize.registerToken(FirebaseInstanceId.getInstance().getToken());
 
-        // Advanced features
         Hashtable<String,String> data = new Hashtable<>();
-        data.put("location","bangalore");
         data.put("gender","male");
+
         GleanTapInitialize.registerToken(FirebaseInstanceId.getInstance().getToken(),data);
 
 
