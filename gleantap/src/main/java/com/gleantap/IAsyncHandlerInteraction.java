@@ -12,4 +12,5 @@ public interface IAsyncHandlerInteraction {
     void validateInteractionToken(OnValidateFinishListner onValidateFinishListner, String Token);
     void validateInteractionTokenAndData(OnValidateFinishListner onValidateFinishListner, String Token, Hashtable<String, String> data);
     void validateInteractionData(OnValidateFinishListner onValidateFinishListner, String data,String AppId);
+    void validatePushData(OnValidateFinishListner onValidateFinishListner, String data,String AppId);
 }

@@ -124,6 +124,20 @@ public class Parse {
         }
         return  jsonObject;
     }
+
+    public static  JSONObject sendPushData(Context context,String event_name,String AppId){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.accumulate(Keys.campaign_id,event_name);
+            jsonObject.accumulate(Keys.appid,AppId);
+            jsonObject.accumulate(Keys.platform,Keys.Android);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  jsonObject;
+    }
+
     public static  String getDeviceUniqueID(Context activity){
         String device_unique_id = Settings.Secure.getString(activity.getContentResolver(),
                 Settings.Secure.ANDROID_ID);

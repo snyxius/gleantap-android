@@ -172,7 +172,62 @@ public class AsyncHandlerInteraction implements IAsyncHandlerInteraction{
         }
     }
 
+    @Override
+    public void validatePushData(OnValidateFinishListner onValidateFinishListner, String data, String AppId) {
+        if (data.isEmpty() || data == null){
+            onValidateFinishListner.emptyData();
+        }else{
+
+            new SendEventData().execute(Parse.sendPushData(context,data,AppId).toString(), Constants.PUSH_CLICK);
+        }
+    }
+
     private class SendEventData extends AsyncTask<String, Void, JSONObject> {
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = WebRequest.postData(params[0],params[1]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return jsonObject;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            super.onPostExecute(jsonObject);
+            onDone(jsonObject);
+        }
+
+        private void onDone(JSONObject jsonObject) {
+            try {
+                if (jsonObject != null) {
+                    if(jsonObject.has(Keys.message) && jsonObject.has(Keys.status)){
+
+                        if(jsonObject.getString(Keys.status).equalsIgnoreCase(Constants.success)){
+
+                            onValidateFinishListner.onSuccess("as");
+
+                        }else{
+
+                            onValidateFinishListner.serverIssue();
+                        }
+                    }else{
+                        onValidateFinishListner.serverIssue();
+                    }
+                } else {
+                    onValidateFinishListner.serverIssue();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private class SendPushClick extends AsyncTask<String, Void, JSONObject> {
 
         @Override
         protected JSONObject doInBackground(String... params) {

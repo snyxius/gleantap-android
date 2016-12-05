@@ -47,6 +47,11 @@ public  class  NotificationPresenter implements INotificationPresenter,OnValidat
         interaction.validateInteractionData(this,data,AppId);
     }
 
+    @Override
+    public void pushClick(String data, String AppId) {
+        interaction.validatePushData(this,data,AppId);
+    }
+
 
     public static void Log(final LOG_LEVEL level, String message, Throwable throwable) {
         if (level.compareTo(logCatLevel) < 1) {

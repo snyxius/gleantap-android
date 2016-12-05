@@ -20,8 +20,9 @@ public interface Keys {
     String platform = "platform";;
     String $id = "$id";
     String status = "status";
-
-
+    String campaign_id ="campaign_id";
+    String title = "title";
+    String descriptions = "descriptions";
     String country = "country";
     String city = "city";
     String os = "os";
