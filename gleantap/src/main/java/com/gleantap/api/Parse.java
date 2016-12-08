@@ -125,6 +125,20 @@ public class Parse {
         return  jsonObject;
     }
 
+    public static  JSONObject sendTagData(Context context,String tag_name,String AppId){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.accumulate(Keys.tag_name,tag_name);
+            jsonObject.accumulate(Keys.appid,AppId);
+            jsonObject.accumulate(Keys.userId,getDeviceUniqueID(context));
+            jsonObject.accumulate(Keys.platform,Keys.Android);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  jsonObject;
+    }
+
     public static  JSONObject sendPushData(Context context,String event_name,String AppId){
         JSONObject jsonObject = new JSONObject();
         try {

@@ -13,5 +13,6 @@ public interface INotificationPresenter {
     void registeredToken(String Token);
     void registeredToken(String Token, Hashtable<String, String> data);
     void registeredEvent(String data,String AppId);
+    void registeredTag(String data,String AppId);
     void pushClick(String data,String AppId);
 }

@@ -20,16 +20,11 @@ public class MainActivity extends AppCompatActivity {
 
         if(getIntent().getStringExtra(Keys.campaign_id) != null){
             GleanTapInitialize.pushClick(getIntent().getStringExtra(Keys.campaign_id));
+
         }
         GleanTapInitialize.initialize(this,"58464beefbb597ac3e8b4568");
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        GleanTapInitialize.registerEvent(Keys.openApp);
-    }
 
     @Override
     protected void onStop() {

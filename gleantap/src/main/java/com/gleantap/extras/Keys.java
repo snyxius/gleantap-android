@@ -18,7 +18,7 @@ public interface Keys {
     String event_name = "event_name";
     String Android = "android";
     String platform = "platform";;
-    String $id = "$id";
+    String tag_name = "tag_name";
     String status = "status";
     String campaign_id ="campaign_id";
     String title = "title";

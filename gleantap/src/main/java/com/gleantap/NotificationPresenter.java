@@ -42,9 +42,15 @@ public  class  NotificationPresenter implements INotificationPresenter,OnValidat
         interaction.validateInteractionTokenAndData(this,Token,data);
     }
 
+
     @Override
     public void registeredEvent(String data,String AppId) {
         interaction.validateInteractionData(this,data,AppId);
+    }
+
+    @Override
+    public void registeredTag(String data, String AppId) {
+        interaction.validateInteractionTagData(this,data,AppId);
     }
 
     @Override

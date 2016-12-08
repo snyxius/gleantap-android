@@ -11,9 +11,10 @@ public class Constants {
     public static final String API = "projects/gleantap/users/api/";
     public static final String REGISTER = URL + API+"userdetails";
     public static final String EVENT_DETAILS = URL + API+"eventdetails";
+    public static final String TAG_DETAILS = URL + API+"tagdetails";
     public static final String SEARCH_DETAILS = URL + API+"searchdetails";
     public static final String USER_SESSION = URL + API+"userSession";
- public static final String PUSH_CLICK = URL + API+"pushClick";
+    public static final String PUSH_CLICK = URL + API+"pushClick";
     public static final String Failed = "Failed";
     public static final int SUCCESS = 200;
     public static final String success = "success";
