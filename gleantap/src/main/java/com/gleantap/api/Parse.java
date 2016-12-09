@@ -51,7 +51,7 @@ public class Parse {
 
     public static String getOSDetails(){
         StringBuilder builder = new StringBuilder();
-        builder.append("android : ").append(Build.VERSION.RELEASE);
+       // builder.append("android : ").append(Build.VERSION.RELEASE);
 
         Field[] fields = Build.VERSION_CODES.class.getFields();
         for (Field field : fields) {
@@ -69,8 +69,26 @@ public class Parse {
             }
 
             if (fieldValue == Build.VERSION.SDK_INT) {
-                builder.append(" : ").append(fieldName).append(" : ");
-                builder.append("sdk=").append(fieldValue);
+            //    builder.append(" : ").append(fieldName).append(" : ");
+             //   builder.append("sdk=").append(fieldValue);
+                if(fieldValue == 24 || fieldValue == 25){
+                    builder.append("Nougat");
+                }else if(fieldValue == 23){
+                    builder.append("Marshmallow");
+                }else if(fieldValue == 21 || fieldValue == 22){
+                    builder.append("Lollipop");
+                }else if(fieldValue == 19){
+                    builder.append("KitKat");
+                }else if(fieldValue == 16 || fieldValue == 17 || fieldValue == 18){
+                    builder.append("Jelly Bean");
+                }else if(fieldValue == 14 || fieldValue == 15 ){
+                    builder.append("Ice Cream Sandwich");
+                }else if(fieldValue == 11 || fieldValue == 12 || fieldValue == 13 ){
+                    builder.append("Honeycomb");
+                }else if(fieldValue == 9 || fieldValue == 10){
+                    builder.append("Gingerbread");
+                }
+
             }
         }
 
