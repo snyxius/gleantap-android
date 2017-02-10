@@ -8,6 +8,7 @@ import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
 import android.util.Log;
 
+import com.gleantap.extras.Constants;
 import com.gleantap.extras.Keys;
 
 import org.json.JSONObject;
@@ -26,8 +27,6 @@ import java.util.concurrent.ExecutionException;
  */
 public class Parse {
 
-
-
     public static  JSONObject sendData(Context context,String App_Id,String token){
         JSONObject jsonObject = new JSONObject();
         try {
@@ -35,6 +34,7 @@ public class Parse {
             jsonObject.accumulate(Keys.devicetoken,token);
             jsonObject.accumulate(Keys.platform,Keys.Android);
             jsonObject.accumulate(Keys.userId,getDeviceUniqueID(context));
+            jsonObject.accumulate(Keys.user_id, Constants.readFromPreferences(context,Keys.user_id,Constants.Default_String));
             JSONObject jsonObject1 = new JSONObject();
             jsonObject1.accumulate(Keys.country, getLocalIpAddress());
             jsonObject1.accumulate(Keys.city,getLocalIpAddress());
@@ -44,6 +44,21 @@ public class Parse {
             jsonObject.accumulate(Keys.data,jsonObject1);
         }catch (Exception e){
                 e.printStackTrace();
+        }
+
+        return  jsonObject;
+    }
+
+
+
+
+    public static  JSONObject sendAppId(Context context,String App_Id){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.accumulate(Keys.appid,App_Id) ;
+            jsonObject.accumulate(Keys.user_id, Constants.readFromPreferences(context,Keys.user_id,Constants.Default_String));
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         return  jsonObject;
@@ -119,6 +134,7 @@ public class Parse {
         try {
             jsonObject.accumulate(Keys.platform,Keys.Android);
             jsonObject.accumulate(Keys.appid,App_Id);
+            jsonObject.accumulate(Keys.user_id, Constants.readFromPreferences(context,Keys.user_id,Constants.Default_String));
             jsonObject.accumulate(Keys.userId,getDeviceUniqueID(context));
             jsonObject.accumulate(Keys.devicetoken,"");
 
@@ -135,6 +151,7 @@ public class Parse {
             jsonObject.accumulate(Keys.event_name,event_name);
             jsonObject.accumulate(Keys.appid,AppId);
             jsonObject.accumulate(Keys.userId,getDeviceUniqueID(context));
+            jsonObject.accumulate(Keys.user_id, Constants.readFromPreferences(context,Keys.user_id,Constants.Default_String));
             jsonObject.accumulate(Keys.platform,Keys.Android);
 
         }catch (Exception e){
@@ -149,6 +166,7 @@ public class Parse {
             jsonObject.accumulate(Keys.tag_name,tag_name);
             jsonObject.accumulate(Keys.appid,AppId);
             jsonObject.accumulate(Keys.userId,getDeviceUniqueID(context));
+            jsonObject.accumulate(Keys.user_id, Constants.readFromPreferences(context,Keys.user_id,Constants.Default_String));
             jsonObject.accumulate(Keys.platform,Keys.Android);
 
         }catch (Exception e){
@@ -162,6 +180,7 @@ public class Parse {
         try {
             jsonObject.accumulate(Keys.campaign_id,event_name);
             jsonObject.accumulate(Keys.appid,AppId);
+            jsonObject.accumulate(Keys.user_id, Constants.readFromPreferences(context,Keys.user_id,Constants.Default_String));
             jsonObject.accumulate(Keys.platform,Keys.Android);
 
         }catch (Exception e){
@@ -194,7 +213,9 @@ public class Parse {
             jsonObject.accumulate(Keys.appid,App_Id) ;
             jsonObject.accumulate(Keys.devicetoken,token);
             jsonObject.accumulate(Keys.platform,Keys.Android);
+            jsonObject.accumulate(Keys.device_id,getDeviceUniqueID(context));
             jsonObject.accumulate(Keys.userId,getDeviceUniqueID(context));
+            jsonObject.accumulate(Keys.user_id, Constants.readFromPreferences(context,Keys.user_id,Constants.Default_String));
             jsonObject.accumulate(Keys.data,jsonObject1);
 
         }catch (Exception e){
@@ -202,5 +223,65 @@ public class Parse {
         }
         return  jsonObject;
     }
+
+    public static  JSONObject sendDataWithLatLng(Context context, String App_Id, String token, Hashtable<String,String> data,String latitude,String longitude){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            JSONObject jsonObject1 = new JSONObject();
+
+            jsonObject1.accumulate(Keys.country, getLocalIpAddress());
+            jsonObject1.accumulate(Keys.city,getLocalIpAddress());
+            jsonObject1.accumulate(Keys.language, Locale.getDefault().getDisplayLanguage());
+            jsonObject1.accumulate(Keys.os,getOSDetails());
+            jsonObject1.accumulate(Keys.ip,getLocalIpAddress());
+            jsonObject1.accumulate(Keys.latitude,latitude);
+            jsonObject1.accumulate(Keys.longitude,longitude);
+
+            Enumeration e = data.keys();
+            while (e.hasMoreElements()) {
+                String key = (String) e.nextElement();
+                jsonObject1.accumulate(key,data.get(key));
+            }
+            jsonObject.accumulate(Keys.appid,App_Id) ;
+            jsonObject.accumulate(Keys.devicetoken,token);
+            jsonObject.accumulate(Keys.platform,Keys.Android);
+            jsonObject.accumulate(Keys.device_id,getDeviceUniqueID(context));
+            jsonObject.accumulate(Keys.userId,getDeviceUniqueID(context));
+            jsonObject.accumulate(Keys.user_id, Constants.readFromPreferences(context,Keys.user_id,Constants.Default_String));
+            jsonObject.accumulate(Keys.data,jsonObject1);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  jsonObject;
+    }
+
+    public static  JSONObject sendDataWithoutData(Context context,String App_Id,String token,String latitude,String longitude){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.accumulate(Keys.appid,App_Id) ;
+            jsonObject.accumulate(Keys.devicetoken,token);
+            jsonObject.accumulate(Keys.platform,Keys.Android);
+            jsonObject.accumulate(Keys.userId,getDeviceUniqueID(context));
+            jsonObject.accumulate(Keys.user_id, Constants.readFromPreferences(context,Keys.user_id,Constants.Default_String));
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.accumulate(Keys.country, getLocalIpAddress());
+            jsonObject1.accumulate(Keys.city,getLocalIpAddress());
+            jsonObject1.accumulate(Keys.language, Locale.getDefault().getDisplayLanguage());
+            jsonObject1.accumulate(Keys.os,getOSDetails());
+
+            jsonObject1.accumulate(Keys.latitude,latitude);
+            jsonObject1.accumulate(Keys.longitude,longitude);
+            jsonObject1.accumulate(Keys.os,getOSDetails());
+//            jsonObject1.accumulate(Keys.ip,getLocalIpAddress());
+            jsonObject.accumulate(Keys.data,jsonObject1);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return  jsonObject;
+    }
+
+
 
 }

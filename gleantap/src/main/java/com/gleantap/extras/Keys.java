@@ -6,7 +6,7 @@ package com.gleantap.extras;
 public interface Keys {
     String appid = "appid";
     String imeino = "imeino";
-    String devicetoken = "devicetoken";
+    String devicetoken = "device_token";
     String error = "error";
     String data = "data";
     String userId = "userId";
@@ -26,7 +26,12 @@ public interface Keys {
     String country = "country";
     String city = "city";
     String os = "os";
+    String device_id = "device_id";
     String language = "language";
     String ip = "ip";
+    String No = "No";
+    String latitude = "latitude";
+    String longitude = "longitude";
+    String $id = "$id";
 
 }

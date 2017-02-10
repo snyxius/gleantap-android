@@ -28,9 +28,6 @@
 package com.gleantap;
 
 import android.app.Activity;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Looper;
 
 class ActivityLifecycleHandler {
 

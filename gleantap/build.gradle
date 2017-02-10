@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: "com.jfrog.bintray"
+
+version = "0.1.0"
 
 android {
     compileSdkVersion 24
@@ -15,24 +17,81 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+
+    // This is important, it will run lint checks but won't abort build
+    lintOptions {
+        abortOnError false
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
 
+task deleteJar(type: Delete){
+    delete 'libs/gleantap.jar'
+}
+
+task createJar(type: Copy){
+    from('build/intermediates/bundles/release/')
+    into('libs/')
+    include('classes.jar')
+    rename('classes.jar','gleantap.jar')
 
 }
 
-// This is the library version used when deploying the artifact
-version = PROJ_VERSION
-// Maven Group ID for the artifact
-group = PROJ_GROUP
+createJar.dependsOn(deleteJar,build)
 
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    testCompile 'junit:junit:4.12'
+}
+def siteUrl = 'https://github.com/snyxiuslabs/GleenTap'      // Homepage URL of the library
+def gitUrl = 'https://github.com/snyxiuslabs/GleenTap.git'   // Git repository URL
+group = "com.gleantap.android"
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
 
+                // Add your description here
+                name 'com.gleantap.android:gleantap-android-sdk' // TODO
 
+                description = 'GleenTap library helps to develop develop push notifications.' // TODO
+                url siteUrl
 
+                // Set your license
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'snyxiuslabs' // TODO
+                        name 'Sagar Babbar' // TODO
+                        email 'support@snyxius.com' // TODO
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
@@ -47,66 +106,32 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
-
-javadoc {
-    options {
-        encoding "UTF-8"
-        charSet 'UTF-8'
-        author true
-        version true
-        links "http://docs.oracle.com/javase/7/docs/api"
-    }
-}
-
 artifacts {
     archives javadocJar
     archives sourcesJar
 }
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
 bintray {
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
 
-    configurations = ['published', 'archives']
+    configurations = ['archives']
     pkg {
         repo = "maven"
         // it is the name that appears in bintray when logged
-        name = PROJ_NAME
-        desc = PROJ_DESCRIPTION
-        websiteUrl = PROJ_WEBSITEURL
-        issueTrackerUrl = PROJ_ISSUETRACKERURL
-        vcsUrl = PROJ_VCSURL
-        publicDownloadNumbers = true
+        name = "com.gleantap.android:gleantap-android-sdk" // TODO
+
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
         publish = true
         version {
             gpg {
-                //was true
-                sign =  false //Determines whether to GPG sign the files. The default is false
+                sign = true //Determines whether to GPG sign the files. The default is false
                 passphrase = properties.getProperty("bintray.gpg.password") //Optional. The passphrase for GPG signing'
-            }
-            mavenCentralSync {
-                sync = true //Optional (true by default). Determines whether to sync the version to Maven Central.
-                user = properties.getProperty("bintray.oss.user") //OSS user token
-                password = properties.getProperty("bintray.oss.password") //OSS user password
-                close = '1'
-                //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
             }
         }
     }
 }
 
-
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    testCompile 'junit:junit:4.12'
-
-
-
-}

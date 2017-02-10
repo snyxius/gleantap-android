@@ -44,7 +44,7 @@ public  class  NotificationPresenter implements INotificationPresenter,OnValidat
 
 
     @Override
-    public void registeredEvent(String data,String AppId) {
+    public void registeredEvent(String data, String AppId) {
         interaction.validateInteractionData(this,data,AppId);
     }
 
@@ -57,6 +57,16 @@ public  class  NotificationPresenter implements INotificationPresenter,OnValidat
     public void pushClick(String data, String AppId) {
         interaction.validatePushData(this,data,AppId);
     }
+
+    @Override
+    public void permissionCheck(int requestCode, String[] permissions, int[] grantResults) {
+        interaction.onRequestPermissionsResult(requestCode,permissions,grantResults);
+    }
+
+//    @Override
+//    public void onStart() {
+//        interaction.onStart();
+//    }
 
 
     public static void Log(final LOG_LEVEL level, String message, Throwable throwable) {
